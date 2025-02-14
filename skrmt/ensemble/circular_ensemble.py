@@ -304,10 +304,8 @@ class CircularEnsemble(BaseEnsemble):
             rang = (interval, interval)
             extent = [interval[0], interval[1], interval[0], interval[1]]
 
-        fig, axes = plt.subplots(nrows=1, ncols=2)
-        fig.set_figheight(5)
-        fig.set_figwidth(13)
-        fig.subplots_adjust(hspace=.5)
+        fig, axes = plt.subplots(nrows=1, ncols=3, width_ratios=[1, 1, 1], figsize=(22, 6))
+        fig.subplots_adjust(hspace=.5, wspace=.3)
 
         axes[0].set_xlim(rang[0][0], rang[0][1])
         axes[0].set_ylim(rang[1][0], rang[1][1])
@@ -319,7 +317,7 @@ class CircularEnsemble(BaseEnsemble):
 
         h2d,_,_,img = axes[1].hist2d(xvals, yvals, range=rang,
                                    cmap=plt.cm.get_cmap('nipy_spectral'))
-        fig.colorbar(img, ax=axes[1])
+        fig.colorbar(img, ax=axes[1], fraction=0.046, pad=0.03)
         axes[1].cla()
         axes[1].imshow(h2d.transpose(), origin='lower', interpolation="bilinear", extent=extent)
         axes[1].set_title('Eigenvalue heatmap')
@@ -327,6 +325,8 @@ class CircularEnsemble(BaseEnsemble):
         axes[1].set_ylabel('imaginary')
 
         plt.suptitle("Complex eigenvalues histogram", fontweight="bold")
+
+        plt.suptitle(f"Matrix size: {len(self.matrix)}x{len(self.matrix)}", fontsize=16, fontweight="bold")
 
         # Saving plot or showing it
         if savefig_path:
